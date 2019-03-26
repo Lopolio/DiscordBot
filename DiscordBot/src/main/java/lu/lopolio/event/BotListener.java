@@ -21,7 +21,6 @@ public class BotListener implements EventListener{
     @Override
     public void onEvent(Event event) {
         if(event instanceof MessageReceivedEvent){
-            System.out.println("Message Received");
             onMessage((MessageReceivedEvent)event);
         }
     }
@@ -31,8 +30,9 @@ public class BotListener implements EventListener{
         
         String message = event.getMessage().getContentRaw();
         if(message.startsWith(commandMap.getTag())){
-            System.out.println("Message contains Tag");
-            message = message.replaceFirst(commandMap.getTag(), "");
+            
+            message = message.substring(1);
+            if(message.charAt(0) == ' ') message = message.substring(1);
             commandMap.commandUser(event.getAuthor(), message, event.getMessage());
         }
     }
