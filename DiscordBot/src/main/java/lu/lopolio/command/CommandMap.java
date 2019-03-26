@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import lu.lopolio.command.Command.ExecutorType;
+import lu.lopolio.commands.standard.StandardCommand;
 import lu.lopolio.main.BotDiscord;
 
 import net.dv8tion.jda.core.JDA;
@@ -18,10 +19,14 @@ import net.dv8tion.jda.core.entities.User;
  
 public final class CommandMap {
  
+    private final BotDiscord botDiscord;
     private final Map<String, SimpleCommand> commands = new HashMap<>();
-    private final String tag = "=";
+    private final String tag = "$";
    
-    public CommandMap() {
+    public CommandMap(BotDiscord botDiscord) {
+        this.botDiscord = botDiscord;
+        
+        registerCommand(new StandardCommand(botDiscord));
     }
    
     public String getTag() {
@@ -90,7 +95,7 @@ public final class CommandMap {
             else if(parameters[i].getType() == Guild.class) objects[i] = message == null ? null : message.getGuild();
             else if(parameters[i].getType() == String.class) objects[i] = command;
             else if(parameters[i].getType() == Message.class) objects[i] = message;
-            else if(parameters[i].getType() == JDA.class) objects[i] = BotDiscord.jda;
+            else if(parameters[i].getType() == JDA.class) objects[i] = botDiscord.getJda();
             else if(parameters[i].getType() == MessageChannel.class) objects[i] = message.getChannel();
         }
         simpleCommand.getMethod().invoke(simpleCommand.getObject(), objects);
