@@ -6,6 +6,7 @@
 package lu.lopolio.commands.standard;
 
 import java.awt.Color;
+import java.util.Date;
 import lu.lopolio.command.Command;
 import lu.lopolio.command.CommandMap;
 import lu.lopolio.command.SimpleCommand;
@@ -20,6 +21,7 @@ import net.dv8tion.jda.core.entities.User;
  */
 public class StandardCommand {
 
+    private Date date;
     private final BotDiscord botDiscord;
     private final CommandMap commandmap;
 
@@ -30,13 +32,15 @@ public class StandardCommand {
 
     @Command(name = "test", description = "A Simple test to see if the bot is working", type = Command.ExecutorType.USER)
     private void info(User user, MessageChannel channel) {
-        System.out.println("User: " + user.getName() + " executed the test command");
+        date = new Date();
+        System.out.println(date.toString()+" User: " + user.getName() + " executed the test command");
         channel.sendMessage(user.getAsMention() + " in the Channel " + channel.getName()).complete();
     }
 
     @Command(name = "help", description = "A Simple Help Displaying all the commands", type = Command.ExecutorType.USER)
     private void help(User user, MessageChannel channel) {
-        System.out.println("User: " + user.getName() + " executed the help command");
+        date = new Date();
+        System.out.println(date.toString()+" User: " + user.getName() + " executed the help command");
 
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle("Command List");
@@ -46,11 +50,8 @@ public class StandardCommand {
             if (command.getExecutorType() == Command.ExecutorType.CONSOLE) {
                 continue;
             }
-
             builder.addField("$"+command.getName(), command.getDescription(), false);
-
         }
-        
         user.openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage(builder.build()).queue());
     }
 }
