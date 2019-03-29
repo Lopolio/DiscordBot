@@ -26,7 +26,7 @@ public final class CommandMap {
     public CommandMap(BotDiscord botDiscord) {
         this.botDiscord = botDiscord;
         
-        registerCommand(new StandardCommand(botDiscord));
+        registerCommand(new StandardCommand(botDiscord, this));
     }
    
     public String getTag() {
