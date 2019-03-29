@@ -33,11 +33,13 @@ public class BotDiscord implements Runnable {
         jda.addEventListener(new BotListener(commandMap));
     }
     
-    public static void main(String[] args) {
+    public static void bootUpBot() {
         
         try {
+            System.out.println("Starting Bot");
             BotDiscord botDiscord = new BotDiscord();
             new Thread(botDiscord, "bot").start();
+            System.out.println("Bot Succesfully Started");
         } catch (LoginException ex) {
             ex.printStackTrace();
         }
@@ -56,5 +58,10 @@ public class BotDiscord implements Runnable {
         scanner.close();
         jda.shutdown();
         System.exit(0);
+    }
+    
+    public boolean haltBot(){
+        jda.shutdown();
+        return true;
     }
 }
