@@ -1,6 +1,7 @@
 package lu.lopolio.main;
 
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.security.auth.login.LoginException;
@@ -10,6 +11,9 @@ import lu.lopolio.sql.SQLConnection;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.TextChannel;
 
 /**
  *
@@ -54,7 +58,15 @@ public class BotDiscord implements Runnable {
     
     public void addXPtoUsers(){
         try {
-            dbconnection.addXPToUsers(jda.getUsers());
+            ArrayList<Member> members = new ArrayList<>();
+            for(TextChannel channel : jda.getTextChannels()){
+                for(Member m : channel.getMembers()){
+                    if(!members.contains(m)){
+                        members.add(m);
+                    }
+                }
+            }
+            dbconnection.addXPToUsers(members);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

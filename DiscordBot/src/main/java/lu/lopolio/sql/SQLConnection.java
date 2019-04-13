@@ -3,8 +3,12 @@ package lu.lopolio.sql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 
 /**
@@ -34,12 +38,15 @@ public class SQLConnection {
         return connection;
     }
     
-    public void addXPToUsers(List<User> users){
+    public void addXPToUsers(ArrayList<Member> users){
         try {
             getConnection();
-            for(User user : users){
-                if(user.isBot()) continue;
-                ResultSet result = connection.createStatement().executeQuery("Select * from users where id = "+user.getId());
+            for(Member user : users){
+                if(user.getUser().isBot() || user.getOnlineStatus() == OnlineStatus.INVISIBLE || user.getOnlineStatus() == OnlineStatus.OFFLINE
+                        || user.getOnlineStatus() == OnlineStatus.UNKNOWN){
+                    continue;
+                }
+                ResultSet result = connection.createStatement().executeQuery("Select * from users where id = "+user.getUser().getId());
                 if(result.next()){
                     //a user already exists in the db
                     String id = result.getString(1);
@@ -51,7 +58,7 @@ public class SQLConnection {
                         level ++;
                         xp -= 500;
                         date = new Date();
-                        System.out.println(date.toString()+" "+user.getName()+" has leveled up to: " + level);
+                        System.out.println(date.toString()+" "+user.getUser().getName()+" has leveled up to: " + level);
                     }
                     connection.createStatement().execute("UPDATE users SET xp = "
                                                                     + xp+", level = "
@@ -60,9 +67,9 @@ public class SQLConnection {
                 }else{
                     //no user like this already exists so we need to create a new
                     date = new Date();
-                    System.out.println(date.toString()+" User: "+ user.getName()+ " did not exist, adding to DB");
+                    System.out.println(date.toString()+" User: "+ user.getUser().getName()+ " did not exist, adding to DB");
                     connection.createStatement().execute("INSERT INTO users (id, xp, level) VALUES ('"
-                                                                        +user.getId()+ "', "
+                                                                        +user.getUser().getId()+ "', "
                                                                         +0+", "
                                                                         +1+")");
                 }

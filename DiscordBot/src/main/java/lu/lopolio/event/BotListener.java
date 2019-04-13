@@ -27,7 +27,6 @@ public class BotListener implements EventListener{
     
     private void onMessage(MessageReceivedEvent event){
         if(event.getAuthor().equals(event.getJDA().getSelfUser())) return;
-        
         String message = event.getMessage().getContentRaw();
         if(message.startsWith(commandMap.getTag())){
             
