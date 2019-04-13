@@ -1,12 +1,16 @@
 package lu.lopolio.sql;
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.MessageChannel;
 
 /**
  *
@@ -15,7 +19,7 @@ import net.dv8tion.jda.core.entities.Member;
 public class SQLConnection {
 
     private Date date;
-    private static final int XPGAINED = 1;
+    private static final int XPGAINED = 500;
     // init connection object
     private Connection connection = null;
 
@@ -38,6 +42,7 @@ public class SQLConnection {
     public void addXPToUsers(ArrayList<Member> users) {
         try {
             int level = 1;
+            boolean gainedNewRole = false;
             getConnection();
             for (Member user : users) {
                 if (user.getUser().isBot() || user.getOnlineStatus() == OnlineStatus.INVISIBLE || user.getOnlineStatus() == OnlineStatus.OFFLINE
@@ -60,9 +65,15 @@ public class SQLConnection {
 
                         ResultSet rolesresult = connection.createStatement().executeQuery("select role from roles where level = '" + level + "';");
                         if (rolesresult.next()) {
+                            gainedNewRole = true;
                             String role = rolesresult.getString(1);
                             user.getGuild().getController().addRolesToMember(user, user.getGuild().getRolesByName(role, true).get(0)).complete();
+                            sendLevelUpMessage(gainedNewRole, user.getGuild().getDefaultChannel(), user, level, role);
                         }
+                        if (!gainedNewRole) {
+                            sendLevelUpMessage(gainedNewRole, user.getGuild().getDefaultChannel(), user, level, "");
+                        }
+
                     }
                     connection.createStatement().execute("UPDATE users SET xp = "
                             + xp + ", level = "
@@ -80,13 +91,25 @@ public class SQLConnection {
 
                     ResultSet rolesresult = connection.createStatement().executeQuery("select role from roles where level = '" + level + "';");
                     if (rolesresult.next()) {
+                        gainedNewRole = true;
                         String role = rolesresult.getString(1);
                         user.getGuild().getController().addRolesToMember(user, user.getGuild().getRolesByName(role, true).get(0)).complete();
+                        sendLevelUpMessage(gainedNewRole, user.getGuild().getDefaultChannel(), user, level, role);
                     }
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void sendLevelUpMessage(boolean gainedNewRole, MessageChannel channel, Member member, int level, String role) {
+        String message = "";
+
+        message += "Congratulations: "+member.getAsMention()+"\nYou reached Level "+ level;
+        if(gainedNewRole){
+            message+= "\nYou received a new Role: "+role;
+        }
+        channel.sendMessage(message).queue();
     }
 }
