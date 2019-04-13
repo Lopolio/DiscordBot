@@ -9,8 +9,6 @@ import java.awt.Color;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lu.lopolio.command.Command;
 import lu.lopolio.command.CommandMap;
 import lu.lopolio.command.SimpleCommand;

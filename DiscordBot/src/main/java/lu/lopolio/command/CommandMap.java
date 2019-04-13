@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import lu.lopolio.command.Command.ExecutorType;
+import lu.lopolio.commands.standard.AnimeCommand;
 import lu.lopolio.commands.standard.StandardCommand;
 import lu.lopolio.main.BotDiscord;
 
@@ -26,7 +27,10 @@ public final class CommandMap {
     public CommandMap(BotDiscord botDiscord) {
         this.botDiscord = botDiscord;
         
-        registerCommand(new StandardCommand(botDiscord, this));
+        registerCommands(
+                new StandardCommand(botDiscord, this),
+                new AnimeCommand(botDiscord, this)
+        );
     }
    
     public String getTag() {
