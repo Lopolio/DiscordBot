@@ -1,14 +1,11 @@
 package lu.lopolio.sql;
 
-import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageChannel;
 
@@ -19,7 +16,7 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 public class SQLConnection {
 
     private Date date;
-    private static final int XPGAINED = 500;
+    private static final int XPGAINED = 1;
     // init connection object
     private Connection connection = null;
 

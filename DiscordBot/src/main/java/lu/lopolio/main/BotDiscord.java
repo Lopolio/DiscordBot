@@ -49,7 +49,7 @@ public class BotDiscord implements Runnable {
         while (running) {
             try {
                 addXPtoUsers();
-                Thread.sleep(1000);
+                Thread.sleep(60000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(BotDiscord.class.getName()).log(Level.SEVERE, null, ex);
             }
