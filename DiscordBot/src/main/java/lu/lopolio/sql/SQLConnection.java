@@ -5,11 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
 
 /**
  *
@@ -29,7 +26,7 @@ public class SQLConnection {
 
     public SQLConnection() {
     }
-    
+
     public Connection getConnection() throws Exception {
         if (connection == null) {
             Class.forName(DRIVER);
@@ -37,41 +34,55 @@ public class SQLConnection {
         }
         return connection;
     }
-    
-    public void addXPToUsers(ArrayList<Member> users){
+
+    public void addXPToUsers(ArrayList<Member> users) {
         try {
+            int level = 1;
             getConnection();
-            for(Member user : users){
-                if(user.getUser().isBot() || user.getOnlineStatus() == OnlineStatus.INVISIBLE || user.getOnlineStatus() == OnlineStatus.OFFLINE
-                        || user.getOnlineStatus() == OnlineStatus.UNKNOWN){
+            for (Member user : users) {
+                if (user.getUser().isBot() || user.getOnlineStatus() == OnlineStatus.INVISIBLE || user.getOnlineStatus() == OnlineStatus.OFFLINE
+                        || user.getOnlineStatus() == OnlineStatus.UNKNOWN) {
                     continue;
                 }
-                ResultSet result = connection.createStatement().executeQuery("Select * from users where id = "+user.getUser().getId());
-                if(result.next()){
+                ResultSet result = connection.createStatement().executeQuery("Select * from users where id = " + user.getUser().getId());
+                if (result.next()) {
                     //a user already exists in the db
                     String id = result.getString(1);
                     int xp = result.getInt(2);
-                    int level = result.getInt(3);
-                    
+                    level = result.getInt(3);
+
                     xp += XPGAINED;
-                    if(xp > 500){
-                        level ++;
+                    if (xp > 500) {
+                        level++;
                         xp -= 500;
                         date = new Date();
-                        System.out.println(date.toString()+" "+user.getUser().getName()+" has leveled up to: " + level);
+                        System.out.println(date.toString() + " " + user.getUser().getName() + " has leveled up to: " + level);
+
+                        ResultSet rolesresult = connection.createStatement().executeQuery("select role from roles where level = '" + level + "';");
+                        if (rolesresult.next()) {
+                            String role = rolesresult.getString(1);
+                            user.getGuild().getController().addRolesToMember(user, user.getGuild().getRolesByName(role, true).get(0)).complete();
+                        }
                     }
                     connection.createStatement().execute("UPDATE users SET xp = "
-                                                                    + xp+", level = "
-                                                                    + level +" WHERE id = '"
-                                                                    +id+"'");
-                }else{
+                            + xp + ", level = "
+                            + level + " WHERE id = '"
+                            + id + "'");
+
+                } else {
                     //no user like this already exists so we need to create a new
                     date = new Date();
-                    System.out.println(date.toString()+" User: "+ user.getUser().getName()+ " did not exist, adding to DB");
+                    System.out.println(date.toString() + " User: " + user.getUser().getName() + " did not exist, adding to DB");
                     connection.createStatement().execute("INSERT INTO users (id, xp, level) VALUES ('"
-                                                                        +user.getUser().getId()+ "', "
-                                                                        +0+", "
-                                                                        +1+")");
+                            + user.getUser().getId() + "', "
+                            + 0 + ", "
+                            + 1 + ")");
+
+                    ResultSet rolesresult = connection.createStatement().executeQuery("select role from roles where level = '" + level + "';");
+                    if (rolesresult.next()) {
+                        String role = rolesresult.getString(1);
+                        user.getGuild().getController().addRolesToMember(user, user.getGuild().getRolesByName(role, true).get(0)).complete();
+                    }
                 }
             }
         } catch (Exception ex) {

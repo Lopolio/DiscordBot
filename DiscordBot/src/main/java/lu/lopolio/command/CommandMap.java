@@ -65,7 +65,7 @@ public final class CommandMap {
         try{
             execute(((SimpleCommand)object[0]), command, (String[])object[1], null);
         }catch(Exception exception){
-            System.out.println("La methode "+((SimpleCommand)object[0]).getMethod().getName()+" n'est pas correctement initialisé.");
+            exception.printStackTrace();
         }
     }
    
@@ -75,7 +75,7 @@ public final class CommandMap {
         try{
             execute(((SimpleCommand)object[0]), command,(String[])object[1], message);
         }catch(Exception exception){
-            System.out.println("La methode "+((SimpleCommand)object[0]).getMethod().getName()+" n'est pas correctement initialisé.");
+            exception.printStackTrace();
         }
         return true;
     }
