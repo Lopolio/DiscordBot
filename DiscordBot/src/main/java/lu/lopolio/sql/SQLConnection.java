@@ -15,7 +15,7 @@ import net.dv8tion.jda.core.entities.Member;
 public class SQLConnection {
 
     private Date date;
-    private static final int XPGAINED = 100;
+    private static final int XPGAINED = 1;
     // init connection object
     private Connection connection = null;
 
