@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageChannel;
 
 /**
  *
@@ -64,7 +64,7 @@ public class SQLConnection {
                         if (rolesresult.next()) {
                             gainedNewRole = true;
                             String role = rolesresult.getString(1);
-                            user.getGuild().getController().addRolesToMember(user, user.getGuild().getRolesByName(role, true).get(0)).complete();
+                            user.getGuild().addRoleToMember(user, user.getGuild().getRolesByName(role, true).get(0)).complete();
                             sendLevelUpMessage(gainedNewRole, user.getGuild().getDefaultChannel(), user, level, role);
                         }
                         if (!gainedNewRole) {
@@ -90,7 +90,7 @@ public class SQLConnection {
                     if (rolesresult.next()) {
                         gainedNewRole = true;
                         String role = rolesresult.getString(1);
-                        user.getGuild().getController().addRolesToMember(user, user.getGuild().getRolesByName(role, true).get(0)).complete();
+                        user.getGuild().addRoleToMember(user, user.getGuild().getRolesByName(role, true).get(0)).complete();
                         sendLevelUpMessage(gainedNewRole, user.getGuild().getDefaultChannel(), user, level, role);
                     }
                 }

@@ -5,9 +5,9 @@ import java.util.Date;
 import lu.lopolio.command.Command;
 import lu.lopolio.command.CommandMap;
 import lu.lopolio.main.BotDiscord;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
 
 /**
  *

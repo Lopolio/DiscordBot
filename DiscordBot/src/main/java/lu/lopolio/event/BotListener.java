@@ -1,9 +1,11 @@
 package lu.lopolio.event;
 
 import lu.lopolio.command.CommandMap;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.EventListener;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
+
+import javax.annotation.Nonnull;
 
 /**
  *
@@ -19,7 +21,7 @@ public class BotListener implements EventListener{
     
     
     @Override
-    public void onEvent(Event event) {
+    public void onEvent(GenericEvent event) {
         if(event instanceof MessageReceivedEvent){
             onMessage((MessageReceivedEvent)event);
         }
@@ -35,5 +37,4 @@ public class BotListener implements EventListener{
             commandMap.commandUser(event.getAuthor(), message, event.getMessage());
         }
     }
-    
 }
