@@ -14,6 +14,8 @@ import lu.lopolio.command.CommandMap;
 import lu.lopolio.command.SimpleCommand;
 import lu.lopolio.main.BotDiscord;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.apache.maven.model.Model;
@@ -92,5 +94,23 @@ public class StandardCommand {
                 + "Lopi-Sensei, or if you wish to contribute in any way, ask my Developer for access to GitHub/Zenkit. "
                 + "Whereas GitHub is the Repository for the Current Code, and Zenkit a ToDo List for work!", false); //General
         user.openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage(builder.build()).queue());
+    }
+
+    @Command(name = "spam", description="Spam someone a lot of messages", type = Command.ExecutorType.USER)
+    private void spamUser(User user, MessageChannel channel, Message message){
+        date = new Date();
+        System.out.println(date.toString()+" User: " + user.getName() + " executed the spam command");
+
+        if(user.getName().contains("Lopolio")){
+            for(Member m :message.getMentionedMembers()){
+                int counter = 0;
+                while(counter < 25){
+                    counter++;
+                    m.getUser().openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage("I am Spamming you son Sensei's Orders").queue());
+                }
+            }
+        }else{
+            channel.sendMessage("I only listen to Sensei").complete();
+        }
     }
 }

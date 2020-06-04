@@ -35,7 +35,7 @@ public class BotDiscord implements Runnable {
     }
     
     public BotDiscord() throws LoginException {
-        jda = new JDABuilder(AccountType.BOT).setToken("MzY4MDgwNTcxNTYzMzc2NjQy.D3vu0A.te3pUXeeHBkwkPnlL0lBs-A6-64").build();
+        jda = new JDABuilder(AccountType.BOT).setToken("MzY4MDgwNTcxNTYzMzc2NjQy.Xti8Dg.-B_GME05A0s9dh1P8ea19Krb0xg").build();
         jda.addEventListener(new BotListener(commandMap));
         running = true;
         new Thread(this, "bot").start();

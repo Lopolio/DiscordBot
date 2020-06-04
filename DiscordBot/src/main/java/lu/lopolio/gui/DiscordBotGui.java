@@ -116,6 +116,7 @@ public class DiscordBotGui extends javax.swing.JFrame {
             this.loginSuccessLabel.setForeground(Color.GREEN);
             this.bootBotButton.setEnabled(false);
         } catch (LoginException ex) {
+            ex.printStackTrace();
             this.loginSuccessLabel.setText("Login Error, Try again!");
             this.loginSuccessLabel.setForeground(Color.RED);
         }

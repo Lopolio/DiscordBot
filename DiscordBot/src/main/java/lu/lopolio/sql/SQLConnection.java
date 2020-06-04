@@ -22,8 +22,8 @@ public class SQLConnection {
 
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3306/discordbot?serverTimezone=UTC";
-    private static final String USERNAME = "BotDiscord";
-    private static final String PASSWORD = "BotDiscord1550155";
+    private static final String USERNAME = "DiscordBot";
+    private static final String PASSWORD = "DiscordBot12345";
 
     public SQLConnection() {
     }
